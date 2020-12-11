@@ -1,20 +1,28 @@
 #!/bin/bash -x
-echo "Welcome to FlipCoin Combination"
-flipCoin=y
+
+echo "Welcome To flipCoin Combination"
+declare -A singlet
+flipCoin=1
 
 function checkCoin ()
 {
-	if [ $1 -eq 0 ]
-	then
-		echo "Heads"
-	else
-		echo "Tails"
-	fi
+	case $1 in
+	0) singlet[head]=$(( ${singlet[head]} + 1 )) ;;
+	1) singlet[tail]=$(( ${singlet[tail]} + 1 )) ;;
+	*) echo "error" ;;
+	esac
 }
 
-while [ $flipCoin == y ]
+
+while [ $flipCoin -le 20 ]
 do
 	random=$(( RANDOM % 2 ))
 	checkCoin $random
-read -p "do you want to flip the coin again? (y/n): " flipCoin
+	flipCoin=$(( $flipCoin + 1 ))
+done
+
+echo "for start"
+for key in ${!singlet[@]}
+do
+	echo "$key : ${singlet[$key]}"
 done
