@@ -1,28 +1,30 @@
 #!/bin/bash -x
 
-echo "Welcome To flipCoin Combination"
-declare -A singlet
+echo "Welcome to FlipCoin Combination"
+declare -A doubl
 flipCoin=1
 
 function checkCoin ()
 {
-	case $1 in
-	0) singlet[head]=$(( ${singlet[head]} + 1 )) ;;
-	1) singlet[tail]=$(( ${singlet[tail]} + 1 )) ;;
+	case $1$2 in
+	00) doubl[hh]=$(( ${doubl[hh]} + 1 )) ;;
+	01) doubl[ht]=$(( ${doubl[ht]} + 1 )) ;;
+	10) doubl[th]=$(( ${doubl[th]} + 1 )) ;;
+	11) doubl[tt]=$(( ${doubl[tt]} + 1 )) ;;
 	*) echo "error" ;;
 	esac
 }
-
-
 while [ $flipCoin -le 20 ]
 do
-	random=$(( RANDOM % 2 ))
-	checkCoin $random
+	random1=$(( RANDOM % 2 ))
+	random2=$(( RANDOM % 2 ))
+	checkCoin $random1 $random2
 	flipCoin=$(( $flipCoin + 1 ))
 done
 
-echo "for start"
-for key in ${!singlet[@]}
+for key in ${!doubl[@]}
 do
-	echo "$key : ${singlet[$key]}"
+	statement=`echo | awk -v key="$key" -v value="${doubl[$key]}" '{ percent = (value / 20) * 100 } END { print key " is " percent "%" }'`
+	echo "$statement"
+
 done
